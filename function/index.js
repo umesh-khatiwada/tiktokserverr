@@ -40,17 +40,17 @@ async function tiktokdownload(url) {
             const $ = cheerio.load(data);
 
             const result = {
-              nowm: $(
-                "#results-list > div:nth-child(2) > div.download > a"
-              )?.attr("href"),
-              wm: $(
-                "#results-list > div:nth-child(3) > div.download > a"
-              )?.attr("href"),
-              audio: $(
-                "#results-list > div:nth-child(4) > div.download > a"
-              ).attr("href"),
-              thumbnail_url: ImageTitle.thumbnail_url,
-              title: ImageTitle.title,
+              // nowm: $(
+              //   "#results-list > div:nth-child(2) > div.download > a"
+              // )?.attr("href"),
+              // wm: $(
+              //   "#results-list > div:nth-child(3) > div.download > a"
+              // )?.attr("href"),
+              // audio: $(
+              //   "#results-list > div:nth-child(4) > div.download > a"
+              // ).attr("href"),
+              // thumbnail_url: ImageTitle.thumbnail_url,
+              // title: ImageTitle.title,
             };
 
             resolve(result);
@@ -111,34 +111,44 @@ async function tikdown(url) {
 
   return new Promise((resolve, reject) => {
     const _token = "nf6sjiVZ18mssq2rKUlonZyLIafhRriYlLaOKpAo";
-    URL = `https://tikdown.org/getAjax?url=${url}&_token=${_token}`;
+    // URL = `https://tikdown.org/getAjax?url=${url}&_token=${_token}`;
     // URL = `https://api.snaptikvideo.com/st-tik/tiktok/dl?url=${url}`;
-    console.log(URL);
+    // URL = url;
+    console.log(url);
     var options = {
-      method: "GET",
-      url: URL,
-      _token: _token,
+      method: "POST",
+      url: "https://ssyoutube.com/api/convert",
+      // _token: _token,
+      data: {
+        url: url,
+      },
     };
+
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        console.log(typeof response.data);
+        console.log(response.data.url[0].url);
+        console.log(response.data.url[1].url);
+        console.log(response.data.thumb);
+        console.log(response.data.meta.title);
 
-        //for tikdown.org
-        const $1 = cheerio.load(response.data.html);
-        const HtmlConvertData = $1.html();
-        const $ = cheerio.load(HtmlConvertData);
-        const imageFile = $("img.preview-image").attr("src");
-        const videoFile = $("a.button-primary").attr("href");
-        const audioFile = $("a.button-primary ").eq(1).attr("href");
+        //console.log(data);
+        // //for tikdown.org
+        // const $1 = cheerio.load(response.data.html);
+        // const HtmlConvertData = $1.html();
+        // const $ = cheerio.load(HtmlConvertData);
+        // const imageFile = $("img.preview-image").attr("src");
+        // const videoFile = $("a.button-primary").attr("href");
+        // const audioFile = $("a.button-primary ").eq(1).attr("href");
 
         //for tikdown org
         const result = {
-          nowm: videoFile,
-          wm: videoFile,
-          audio: audioFile,
-          thumbnail_url: imageFile,
-          title: "coming soon",
+          nowm: response.data.url[0].url,
+          wm: response.data.url[0].url,
+          audio: response.data.url[1].url,
+          thumbnail_url: response.data.thumb,
+          title: response.data.meta.title,
         };
 
         // //for snaptikvideo
