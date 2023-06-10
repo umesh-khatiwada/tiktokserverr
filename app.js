@@ -6,6 +6,8 @@ var cors = require("cors");
 
 dotenv.config({ path: "./config.env" });
 
+console.log("helloooo")
+
 require("./db/conn");
 // const User = require('./model/userSchema');
 
